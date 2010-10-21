@@ -1,14 +1,16 @@
 Introduction
 ============
 
-There is now easier way to translate your contents. 
+Provides integration of raptus.multilanguagefields.
 
-The ollowing features for raptus.article are provided by this package:
+The following features for raptus.article are provided by this package:
 
+Fields
+------
     * Use raptus.multilanguagefields for article 
     
-Dependencies:
-
+Dependencies
+------------
     * raptus.article.core
     * raptus.multilanguageplone
 
@@ -54,7 +56,5 @@ Now edit your article. You will get for each field the possibility to translate.
 Copyright and credits
 =====================
 
-raptus.article is copyrighted by raptus_, and licensed under the GPL. 
+raptus.article is copyrighted by `Raptus AG <http://raptus.com>`_ and licensed under the GPL. 
 See LICENSE.txt for details.
-
-.. _raptus: http://raptus.com/ 
