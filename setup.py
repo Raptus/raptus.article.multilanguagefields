@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '2.0b4'
+version = '2.0b5'
 
 setup(name='raptus.article.multilanguagefields',
       version=version,
@@ -21,7 +21,7 @@ setup(name='raptus.article.multilanguagefields',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['raptus', 'raptus.article'],
       include_package_data=True,
-      zip_safe=True,
+      zip_safe=False,
       install_requires=[
           'setuptools',
           'raptus.article.core',
