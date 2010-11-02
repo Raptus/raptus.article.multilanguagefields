@@ -4,7 +4,7 @@ from Products.CMFCore.utils import getToolByName
 
 modifiers = [modifier.ArticleModifier,
              modifier.TeaserModifier,
-             modifier.AdditionalwysisygModifier,
+             modifier.AdditionalwysiwygModifier,
              modifier.MapsModifier,
              modifier.MarkerModifier]
 

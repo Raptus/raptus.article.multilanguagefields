@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.0b6 (2010-11-02)
+------------------
+
+* Fixed support for multilanguage images and teaser images
+* Adjusted to be compatible with the latest raptus.multilanguagefields version (1.0b6)
+
 2.0b5 (2010-10-24)
 ------------------
 

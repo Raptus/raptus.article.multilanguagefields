@@ -9,10 +9,10 @@ from Products.ATContentTypes.configuration import zconf
 from Products.validation import V_REQUIRED
 
 from raptus.article.core.content.article import Article
-from raptus.multilanguagefields import widgets, fields
+from raptus.multilanguagefields import widgets
+from raptus.multilanguagefields.patches.traverse import __bobo_traverse__
 from raptus.multilanguageplone.extender import fields
 from raptus.multilanguageplone.extender.base import DefaultExtender
-from raptus.multilanguageplone.extender.image import __bobo_traverse__ as __bobo_traverse__mulitlang
 
 class BaseModifier(object):
     adapts(Article)
@@ -24,99 +24,93 @@ class BaseModifier(object):
     def fiddle(self, schema):
         for field in self.fields:
             schema.replaceField(field.getName(),field)
-    
-    
+
+
 class ArticleModifier(BaseModifier):
-    
     for_package = 'raptus.article.core'
 
     fields = DefaultExtender.fields + [
-                      fields.TextField('text',
-                      required=False,
-                      searchable=True,
-                      validators = ('isTidyHtmlWithCleanup',),
-                      storage = AnnotationStorage(migrate=True),
-                      default_output_type = 'text/x-html-safe',
-                      widget = widgets.RichWidget(
-                                description = '',
-                                label = _(u'label_body_text', default=u'Body Text'),
-                                rows = 25,
-                                allow_file_upload = zconf.ATDocument.allow_document_upload),
-                      schemata='default',
-                    ),
-                ]
+        fields.TextField('text',
+            required=False,
+            searchable=True,
+            validators = ('isTidyHtmlWithCleanup',),
+            storage = AnnotationStorage(migrate=True),
+            default_output_type = 'text/x-html-safe',
+            widget = widgets.RichWidget(
+                description = '',
+                label = _(u'label_body_text', default=u'Body Text'),
+                rows = 25,
+                allow_file_upload = zconf.ATDocument.allow_document_upload),
+            schemata='default',
+        ),
+    ]
 
 
 class TeaserModifier(BaseModifier):
-    
     for_package = 'raptus.article.teaser'
 
     fields = [
-                fields.ImageField('image',
-                required=False,
-                languageIndependent=True,
-                storage = AnnotationStorage(),
-                swallowResizeExceptions = zconf.swallowImageResizeExceptions.enable,
-                pil_quality = zconf.pil_config.quality,
-                pil_resize_algo = zconf.pil_config.resize_algo,
-                max_size = zconf.ATImage.max_image_dimension,
-                sizes= {'large'   : (768, 768),
-                        'preview' : (400, 400),
-                        'mini'    : (200, 200),
-                        'thumb'   : (128, 128),
-                        'tile'    :  (64, 64),
-                        'icon'    :  (32, 32),
-                        'listing' :  (16, 16),
-                       },
-                validators = (('isNonEmptyFile', V_REQUIRED),
-                              ('checkImageMaxSize', V_REQUIRED)),
-                widget = widgets.ImageWidget(
-                    description = '',
-                    label= _(u'label_image', default=u'Image'),
-                    show_content_type = False,
-                )
-            ),
-            
-            fields.StringField('imageCaption',
-                required = False,
-                searchable = True,
-                widget = widgets.StringWidget(
-                    description = '',
-                    label = _(u'label_image_caption', default=u'Image Caption'),
-                    size = 40
-                )
-            ),
-        ]
-    
-import raptus.article.teaser
-__bobo_traverse__old = Article.__bobo_traverse__
-def __bobo_traverse__(self, REQUEST, name):
-    if queryAdapter(self,name='MultilanguageArticleTeaserModifier', interface=ISchemaModifier)\
-       and name.startswith('image'):
-        return __bobo_traverse__mulitlang(self, REQUEST, name)
-    else:
-        return __bobo_traverse__old(self, REQUEST, name)
-Article.__bobo_traverse__ = __bobo_traverse__
+        fields.ImageField('image',
+            required=False,
+            languageIndependent=True,
+            storage = AnnotationStorage(),
+            swallowResizeExceptions = zconf.swallowImageResizeExceptions.enable,
+            pil_quality = zconf.pil_config.quality,
+            pil_resize_algo = zconf.pil_config.resize_algo,
+            max_size = zconf.ATImage.max_image_dimension,
+            sizes= {'large'   : (768, 768),
+                    'preview' : (400, 400),
+                    'mini'    : (200, 200),
+                    'thumb'   : (128, 128),
+                    'tile'    :  (64, 64),
+                    'icon'    :  (32, 32),
+                    'listing' :  (16, 16),
+                   },
+            validators = (('isNonEmptyFile', V_REQUIRED),
+                          ('checkImageMaxSize', V_REQUIRED)),
+            widget = widgets.ImageWidget(
+                description = '',
+                label= _(u'label_image', default=u'Image'),
+                show_content_type = False,
+            )
+        ),
+        fields.StringField('imageCaption',
+            required = False,
+            searchable = True,
+            widget = widgets.StringWidget(
+                description = '',
+                label = _(u'label_image_caption', default=u'Image Caption'),
+                size = 40
+            )
+        ),
+    ]
 
-class AdditionalwysisygModifier(BaseModifier):
-    
+try:
+    import raptus.article.teaser
+    __bobo_traverse__old = Article.__bobo_traverse__
+    Article.__bobo_traverse__ = __bobo_traverse__
+except ImportError: # no raptus.article.teaser
+    pass
+
+class AdditionalwysiwygModifier(BaseModifier):
+
     for_package = 'raptus.article.additionalwysiwyg'
 
     fields = [
-              fields.TextField('additional-text',
-              required=False,
-              searchable=True,
-              validators = ('isTidyHtmlWithCleanup',),
-              storage = AnnotationStorage(migrate=True),
-              default_output_type = 'text/x-html-safe',
-              widget = widgets.RichWidget(
-                        description = '',
-                        label = _(u'label_additional_text', default=u'Additional Text'),
-                        rows = 25,
-                        allow_file_upload = zconf.ATDocument.allow_document_upload),
-              schemata='default',
-            ),
-        ]
+        fields.TextField('additional-text',
+            required=False,
+            searchable=True,
+            validators = ('isTidyHtmlWithCleanup',),
+            storage = AnnotationStorage(migrate=True),
+            default_output_type = 'text/x-html-safe',
+            widget = widgets.RichWidget(
+                description = '',
+                label = _(u'label_additional_text', default=u'Additional Text'),
+                rows = 25,
+                allow_file_upload = zconf.ATDocument.allow_document_upload),
+            schemata='default',
+        ),
+    ]
 
 class MapsModifier(BaseModifier):
     try:
@@ -124,17 +118,16 @@ class MapsModifier(BaseModifier):
         adapts(Map)
     except:
         pass
-    
+
     for_package = 'raptus.article.maps'
 
-    fields = DefaultExtender.fields + []
-    
+    fields = DefaultExtender.fields
+
     def fiddle(self, schema):
         super(MapsModifier, self).fiddle(schema)
         field = schema.get('title').copy()
         field.required = False
         schema['title'] = field
-
 
 class MarkerModifier(BaseModifier):
     try:
@@ -145,5 +138,4 @@ class MarkerModifier(BaseModifier):
 
     for_package = 'raptus.article.maps'
 
-    fields = DefaultExtender.fields + []
-    
+    fields = DefaultExtender.fields
