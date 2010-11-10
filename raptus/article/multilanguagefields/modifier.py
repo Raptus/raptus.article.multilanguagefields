@@ -3,12 +3,13 @@ from zope.interface import implements
 
 from archetypes.schemaextender.interfaces import ISchemaModifier
 from archetypes.schemaextender.field import ExtensionField
-from Products.Archetypes import PloneMessageFactory as _
+from Products.Archetypes import PloneMessageFactory as _p
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.ATContentTypes.configuration import zconf
 from Products.validation import V_REQUIRED
 
 from raptus.article.core.content.article import Article
+from raptus.article.core import RaptusArticleMessageFactory as _
 from raptus.multilanguagefields import widgets
 from raptus.multilanguagefields.patches.traverse import __bobo_traverse__
 from raptus.multilanguageplone.extender import fields
@@ -38,7 +39,7 @@ class ArticleModifier(BaseModifier):
             default_output_type = 'text/x-html-safe',
             widget = widgets.RichWidget(
                 description = '',
-                label = _(u'label_body_text', default=u'Body Text'),
+                label = _p(u'label_body_text', default=u'Body Text'),
                 rows = 25,
                 allow_file_upload = zconf.ATDocument.allow_document_upload),
             schemata='default',
@@ -70,7 +71,7 @@ class TeaserModifier(BaseModifier):
                           ('checkImageMaxSize', V_REQUIRED)),
             widget = widgets.ImageWidget(
                 description = '',
-                label= _(u'label_image', default=u'Image'),
+                label= _p(u'label_image', default=u'Image'),
                 show_content_type = False,
             )
         ),
@@ -79,7 +80,7 @@ class TeaserModifier(BaseModifier):
             searchable = True,
             widget = widgets.StringWidget(
                 description = '',
-                label = _(u'label_image_caption', default=u'Image Caption'),
+                label = _p(u'label_image_caption', default=u'Image Caption'),
                 size = 40
             )
         ),
