@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.0b8 (2011-03-07)
+------------------
+
+* Be more defensive when modifying the schema
+
 2.0b7 (2010-11-10)
 ------------------
 

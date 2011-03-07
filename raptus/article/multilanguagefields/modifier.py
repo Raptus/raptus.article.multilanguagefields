@@ -24,7 +24,11 @@ class BaseModifier(object):
          
     def fiddle(self, schema):
         for field in self.fields:
-            schema.replaceField(field.getName(),field)
+            lang = field._v_lang
+            field.resetLanguage()
+            if field.getName() in schema:
+                schema.replaceField(field.getName(),field)
+            field.setLanguage(lang)
 
 
 class ArticleModifier(BaseModifier):
