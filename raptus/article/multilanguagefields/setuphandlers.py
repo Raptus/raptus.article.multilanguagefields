@@ -26,13 +26,13 @@ def install(context):
     sm = portal.getSiteManager()
     for modifier in modifiers:
         if quickinstaller.isProductInstalled(modifier.for_package):
+            sm.unregisterAdapter(modifier, name='MultilanguageArticle%s' % modifier.__name__)
             sm.registerAdapter(modifier, name='MultilanguageArticle%s' % modifier.__name__)
         
     reindex(portal)
     
 def uninstall(context):
-    if context.readDataFile('raptus.article.multilanguagefields_install.txt') is None and \
-       context.readDataFile('raptus.article.multilanguagefields_uninstall.txt') is None:
+    if context.readDataFile('raptus.article.multilanguagefields_uninstall.txt') is None:
         return
     
     portal = context.getSite()
