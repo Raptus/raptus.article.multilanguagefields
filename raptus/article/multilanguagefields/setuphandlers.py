@@ -8,13 +8,6 @@ modifiers = [modifier.ArticleModifier,
              modifier.MapsModifier,
              modifier.MarkerModifier]
 
-indexes = ('SearchableText', 'Subject', 'Title', 'Description', 'sortable_title',)
-
-def reindex(portal):
-    catalog = getToolByName(portal, 'portal_catalog')
-    for index in indexes:
-        catalog.reindexIndex(index, portal.REQUEST)
-
 def install(context):
 
     if context.readDataFile('raptus.article.multilanguagefields_install.txt') is None:
@@ -28,9 +21,7 @@ def install(context):
         if quickinstaller.isProductInstalled(modifier.for_package):
             sm.unregisterAdapter(modifier, name='MultilanguageArticle%s' % modifier.__name__)
             sm.registerAdapter(modifier, name='MultilanguageArticle%s' % modifier.__name__)
-        
-    reindex(portal)
-    
+
 def uninstall(context):
     if context.readDataFile('raptus.article.multilanguagefields_uninstall.txt') is None:
         return
@@ -39,6 +30,3 @@ def uninstall(context):
     sm = portal.getSiteManager()
     for modifier in modifiers:
         sm.unregisterAdapter(modifier, name='MultilanguageArticle%s' % modifier.__name__)
-        
-    reindex(portal)
-    

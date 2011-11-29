@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.0b10 (2011-11-29)
+-------------------
+
+* Removed reindexing from setuphandler
 
 2.0b9 (2011-05-30)
 ------------------
