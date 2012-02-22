@@ -6,7 +6,8 @@ modifiers = [modifier.ArticleModifier,
              modifier.TeaserModifier,
              modifier.AdditionalwysiwygModifier,
              modifier.MapsModifier,
-             modifier.MarkerModifier]
+             modifier.MarkerModifier,
+             modifier.CollectionModifier]
 
 def install(context):
 

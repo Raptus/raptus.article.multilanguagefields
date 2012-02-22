@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.0b11 (Unreleased)
+-------------------
+
+* Added extenders for raptus.article.collections
+
 2.0b10 (2011-11-29)
 -------------------
 

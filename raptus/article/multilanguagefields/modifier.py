@@ -6,6 +6,10 @@ from archetypes.schemaextender.field import ExtensionField
 from Products.Archetypes import PloneMessageFactory as _p
 from Products.Archetypes.atapi import AnnotationStorage
 from Products.ATContentTypes.configuration import zconf
+try: # Plone 4 and higher
+    from Products.ATContentTypes.interfaces.topic import IATTopic
+except: # BBB Plone 3
+    from Products.ATContentTypes.interface.topic import IATTopic
 from Products.validation import V_REQUIRED
 
 from raptus.article.core.content.article import Article
@@ -144,3 +148,20 @@ class MarkerModifier(BaseModifier):
     for_package = 'raptus.article.maps'
 
     fields = DefaultExtender.fields
+
+class CollectionModifier(BaseModifier):
+    adapts(IATTopic)
+    for_package = 'raptus.article.collections'
+
+    fields = [
+        fields.StringField('more',
+            required = False,
+            searchable = False,
+            storage = AnnotationStorage(),
+            schemata = 'settings',
+            widget = widgets.StringWidget(
+                description = _(u'description_more', default=u'Custom text used for read more links in article components displaying this collection.'),
+                label= _(u'label_more', default=u'More link'),
+            )
+        ),
+    ]
